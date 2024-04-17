@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: empty
+spec:
+  containers:
+  - name: empty
+    image: alpine:latest
+    command: ["/bin/sleep", "infinity"]

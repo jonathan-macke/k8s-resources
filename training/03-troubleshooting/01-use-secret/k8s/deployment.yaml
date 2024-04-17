@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: 01-use-secret
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: 'use_secret'
+          imagePullPolicy: Never
+          env:
+          - name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                key: DB_URL
+                name: app-secret
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: DB_USER
+                name: app-secret
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                key: DB_PMD
+                name: app-secret
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: "0.5"
+            limits:
+              cpu: "21"
+              memory: 5128Mi
+
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: app-secret
+  namespace: 01-use-secret
+spec:
+
+  # SecretStoreRef defines which SecretStore to use when fetching the secret data
+  secretStoreRef:
+    name: app-secret-store
+    kind: SecretStore  
+
+  # RefreshInterval is the amount of time before the values reading again from the SecretStore provider
+  # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h" (from time.ParseDuration)
+  # May be set to zero to fetch and create it once
+  refreshInterval: "1m"
+
+  # Data defines the connection between the Kubernetes Secret keys and the Provider data
+  dataFrom:
+  - extract:
+      key: 01-use-secrt
+
+---
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: app-secret-store
+  namespace: 01-use-secret
+spec:
+  provider:
+    vault:
+      server: "http://vault.vault:8200"
+      path: "test"
+      # Version is the Vault KV secret engine version.
+      # This can be either "v1" or "v2", defaults to "v2"
+      version: "v2"
+      auth:
+        # points to a secret that contains a vault token
+        # https://www.vaultproject.io/docs/auth/token
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault-token
+  namespace: 01-use-secret
+data:
+  token: cm9vdA== # "root"

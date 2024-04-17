@@ -1,0 +1,7 @@
+global:
+   namespace: "vault"
+
+server:
+   affinity: ""
+   dev:
+      enabled: true
