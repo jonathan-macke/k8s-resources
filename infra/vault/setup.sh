@@ -22,7 +22,7 @@ helm install vault hashicorp/vault --namespace $NAMESPACE -f helm-vault-dev-valu
 
 
 check_helm_deployed() {
-    if helm status vault -n vault -o json | jq '.info.status' | grep -q "deployed"; then
+    if helm status vault -n $NAMESPACE -o json | jq '.info.status' | grep -q "deployed"; then
         return 0 
     else
         return 1 
