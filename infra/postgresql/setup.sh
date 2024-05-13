@@ -2,6 +2,10 @@
 
 NAMESPACE="postgresql"
 
-kubectl create namespace $NAMESPACE
+source ../util/utils.sh
 
-kubectl apply -f postgresql.yaml
+createNamespace $NAMESPACE
+
+k_apply postgresql.yaml
+
+check_all_pods_are_ready $NAMESPACE

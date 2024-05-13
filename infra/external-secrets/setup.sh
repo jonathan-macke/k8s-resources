@@ -1,28 +1,15 @@
 #!/bin/sh
 
+source ../util/utils.sh
+
 NAMESPACE=external-secrets
+NAME=external-secrets
 
-helm repo add external-secrets https://charts.external-secrets.io
+helm repo add $NAME https://charts.external-secrets.io
 
-if helm list -n external-secrets -o json | jq '.[] | select(.name == "external-secrets").status' | grep -q "deployed"; then
-    echo "external-secret chart already deployed"
-else 
-    helm install external-secrets external-secrets/external-secrets -n external-secrets --create-namespace
-fi
+helm_install $NAME external-secrets/external-secrets $NAMESPACE
 
-pod_names=$(kubectl get pods -n "$NAMESPACE" -o=jsonpath='{.items[*].metadata.name}')
-
-# Convert the space-separated string of pod names into an array
-read -ra pod_array <<<"$pod_names"
-
-for pod_name in "${pod_array[@]}"; do
-    echo "Waiting for pod $pod_name to be ready..."
-    until kubectl wait --for=condition=Ready pod/"$pod_name" -n "$NAMESPACE" --timeout=300s; do
-        echo "Pod $pod_name is not ready yet, waiting..."
-        sleep 10
-    done
-    echo "Pod $pod_name is ready."
-done
+check_all_pods_are_ready $NAMESPACE
 
 kubectl apply -f vault-secret-store.yaml
 

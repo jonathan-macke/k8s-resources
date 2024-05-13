@@ -45,7 +45,6 @@ spec:
   containers belonging to the pod.
     - <init container 1>
     - <init container 2>
-  imagePullSecrets:  
   imagePullSecrets:
     - name: regcred-gar
    #  
@@ -71,7 +70,7 @@ resources:
 
 ## Create a first deployment
 
-Practical work will done in a namespace `workload``
+Practical work will done in a namespace `workload`
 
 
 ### Exercise
@@ -95,7 +94,7 @@ kubectl describe pod $pod_name
 
 Try to access the pod
 ```
-pod_ip=$(k get pods $pod_name -o jsonpath='{.status.podIP}')
+pod_ip=$(kubectl get pods $pod_name -o jsonpath='{.status.podIP}')
 curl http://$pod_ip --verbose
 ```
 
@@ -158,3 +157,9 @@ You need:
 ## Rollout strategy
 
 
+
+## Pod lifecycle
+
+
+
+## Security policy

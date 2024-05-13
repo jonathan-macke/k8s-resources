@@ -1,16 +1,20 @@
 #!/bin/sh
-NAMESPACE="01-use-secret"
+NAMESPACE="concept-secret"
 SECRET_ENGINE="test"
 SECRET=$NAMESPACE
 
 
-kubectl exec -t vault-0 -n vault -- vault kv put -mount=$SECRET_ENGINE $SECRET DB_PWD=SecurePassword DB_USER=ps_user DB_URL=jdbc:postgresql://db.postgresql:5432/ps_db
+KEYSTORE_BASE64=$(base64 -i keystore.jks)
+
+kubectl exec -t vault-0 -n vault -- vault kv put -mount=$SECRET_ENGINE $SECRET KEYSTORE_PWD=keystore KEYSTORE=$KEYSTORE_BASE64
 
 kubectl create namespace $NAMESPACE
 
 cd app
-docker build -t use_secret .
-minikube image load use_secret
+docker build -t app-keystore-secret .
+
+# make the image available for downloading to k8s
+minikube image load app-keystore-secret
 
 cd ..
 
