@@ -1,4 +1,4 @@
 #!/bin/sh
 
-minikube stop
-minikube delete
+minikube stop --all
+minikube delete --all

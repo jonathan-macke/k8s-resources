@@ -1,6 +1,6 @@
 # Secret
 
-This section will cover k8s Secret and External Secret connected to Vault
+This section will cover **k8s Secret** and **External Secret** connected to Vault
 
 **What you will learn**
 - import Vault secret as k8s secret

@@ -22,6 +22,6 @@ kubectl exec -t $POD_NAME -n $NAMESPACE -- vault secrets enable -path=$SECRET_EN
 # add a new value in the secret engine
 kubectl exec -t $POD_NAME -n $NAMESPACE -- vault kv put -mount=$SECRET_ENGINE $SECRET pwd=changeme
 
-minikube service vault -n $NAMESPACE
+
 
 

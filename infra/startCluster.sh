@@ -1,5 +1,6 @@
 #!/bin/sh
 
 minikube config set kubernetes-version v1.27.13
-minikube start --alsologtostderr --v=2 --insecure-registry "gcr.io"
-minikube addons enable registry
+minikube start --nodes 3 --insecure-registry "gcr.io" -p prod
+
+#minikube start --insecure-registry "gcr.io" -p prod
