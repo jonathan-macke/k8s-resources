@@ -12,7 +12,7 @@ We need an additional abstraction in order to achieve this because:
 A Service is the abstraction we need in order to expose groups of Pods over a network. Each Service has an IP address and port that never change while the service exists.
 
 
-![k8s service](../assets/service.png "k8s service")
+![k8s service](/../../../assets/service.png "k8s service")
 
 > [!IMPORTANT]
 > The set of Pods targeted by a Service is usually determined by a **selector** that you define. There is no link between a Service and a Deployment objects.
@@ -124,7 +124,7 @@ We will see the two options:
 - Ingress: see **02-ingress** part
 
 
-![NodePort](../assets/nodeport.png "NodePort")
+![NodePort](/../../../assets/nodeport.png "NodePort")
 
 **Delete existing service**
 ```shell
