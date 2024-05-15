@@ -410,6 +410,7 @@ You can specify **maxUnavailable** and **maxSurge** to control the rolling updat
 The value can be an *absolute number* (for example, 5) or a *percentage* of desired Pods (for example, 10%). Default value for both is 25%.
 
 **maxSurge**: This parameter defines the maximum number of pods that can be created over the desired number of pods during a rolling update.
+
 **maxUnavailable**: This parameter specifies the maximum number or percentage of pods that can be unavailable during the rolling update process.
 
 Example with *replica = 10*, *maxSurge = 2* and *maxUnavailable = 1*, it means that 
@@ -478,6 +479,7 @@ You should notice the scale up/down is done 1 by 1
 There are two different types of resource configurations: requests and limits
 
 **requests** : define the minimum amount of resources that containers need. Requests affect how the pods are scheduled in Kubernetes (used by kube-scheduler)
+
 **limits**: define the max amount of resources that the container can consume. Used by kubelet to kill pod in case it reachs its limit
 
 Kubernetes has several components designed to collect metrics, but two are essential in this case:
