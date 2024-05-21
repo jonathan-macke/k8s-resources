@@ -12,3 +12,12 @@ Its main characteristics:
 Two major solutions to implement GitOps on k8s:
 * Flux CD: see section about FluxCD
 * Argo CD: not covered by this training
+
+
+# Configuration Management
+
+In addition to GitOps tools, other tools are used to produce the k8s manifests (eg. Deployment, Service, Ingress etc...)
+
+The most common are:
+* **kustomize**: see the section kustomize for detail
+* **helm**: not covered. Use JSON templating. More advanced tool than kustomize

@@ -131,6 +131,22 @@ We will see the two options:
 
 As each node exposes the node port, we have to use external load balancer in order to balance the request between the nodes.
 
+If not specified in the NodePort service, the API server will assign a node port from a configurable range (default range: 30000-32767)
+You can specify the node port to use in the Service manifest
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - port: 80
+      nodePort: 30007
+```
 
 
 ### 4.1. Exercise
@@ -177,8 +193,18 @@ curl http://192.168.49.3:31885/test.html
 curl http://192.168.49.4:31885/test.html
 ```
 
+## 5. LoadBalancer
 
-## 5. Troubleshoot service
+On cloud providers which support external load balancers, setting the `type` field to `LoadBalancer` provisions a load balancer for your Service.
+
+![LoadBalancer](../../../assets/loadbalancer.png "LoadBalancer")
+
+This type of service does not provide filtering and routing. For every service we want to expose, we create a load balancer in the cloud provider which can be costly.
+It's better to use **Ingress** instead.
+
+
+
+## 6. Troubleshoot service
 
 > [!NOTE]
 > Debugging Services can be challenging. For example, when we cannot reach the Pods targeted by the Service  

@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-html
+  namespace: workload
+data:
+  test.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Test Page</title>
+    </head>
+    <body>
+        <h1>Hello, World!</h1>
+        <p>This is a test HTML page served by Nginx in Kubernetes.</p>
+    </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: workload
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: test-html
+      containers:
+        - name: app
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - name: config
+            mountPath: "/usr/share/nginx/html"
+            readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /test.html
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /test.html
+              port: 80
+          resources:
+            limits:
+              cpu: "1"
+              memory: "100Mi"
+            requests:
+              cpu: "500m"
+              memory: "10Mi"

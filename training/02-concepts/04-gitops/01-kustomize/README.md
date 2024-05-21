@@ -57,4 +57,9 @@ docker build -t localhost:5000/myapp .
 docker push localhost:5000/myapp
 ```
 
+If you already have a Docker image built in local filesystem, you can tag the image so that it can be pushed to the local registry
+```shell
+docker tag myapp localhost:5000/myapp
+docker push localhost:5000/myapp
+```
 
